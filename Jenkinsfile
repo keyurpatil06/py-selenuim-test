@@ -12,7 +12,6 @@ pipeline {
             steps {
                 sh '''
                     python --version
-                    python -m pip install --upgrade pip
                     python -m pip install -r requirements.txt
                 '''
             }
@@ -20,9 +19,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                withEnv(["PATH=C:\\path\\to\\chromedriver;${env.PATH}"]) {
-                    sh 'pytest --junitxml=results.xml'
-                }
+                sh 'pytest --junitxml=results.xml'
             }
         }
 
@@ -35,7 +32,7 @@ pipeline {
 
     post {
         always {
-            echo "Pipeline finished (success or failure)"
+            echo "Pipeline finished"
         }
     }
 }

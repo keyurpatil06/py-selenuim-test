@@ -10,25 +10,24 @@ pipeline {
 
         stage('Setup Environment') {
             steps {
-                // Make sure Python and pip are installed on Jenkins agent
                 sh '''
                     python --version
-                    pip install --upgrade pip
-                    pip install -r requirements.txt
+                    python -m pip install --upgrade pip
+                    python -m pip install -r requirements.txt
                 '''
             }
         }
 
         stage('Run Tests') {
             steps {
-                // Run pytest and generate JUnit-style report
-                sh 'pytest --junitxml=results.xml'
+                withEnv(["PATH=C:\\path\\to\\chromedriver;${env.PATH}"]) {
+                    sh 'pytest --junitxml=results.xml'
+                }
             }
         }
 
         stage('Publish Results') {
             steps {
-                // Publish the pytest results in Jenkins
                 junit 'results.xml'
             }
         }
